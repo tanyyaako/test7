@@ -1,6 +1,7 @@
 package Service;
 
 import org.example.DTO.ServiceDTO;
+import org.example.FrontCourseApplication;
 import org.example.Repository.ServiceRepositoryImpl;
 import org.example.Service.ServiceInterface;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(classes = FrontCourseApplication.class)
 @ActiveProfiles("test")
 public class MockDataServiceInterfaceTest {
 
