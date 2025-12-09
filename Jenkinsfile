@@ -2,30 +2,31 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK 21'
+        maven 'Maven'
+        jdk 'JDK21'
     }
 
     stages {
-        stage('Check Environment') {
+        stage('Build') {
             steps {
-                sh 'java --version'
-                script {
-                    def javaHome = tool 'JDK 21'
-                    env.JAVA_HOME = javaHome
-                    env.PATH = "${javaHome}/bin:${env.PATH}"
+                bat 'mvn clean compile'
+            }
+        }
+
+        stage('Integration Tests') {
+            steps {
+                bat 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
 
-        stage('Checkout') {
+        stage('Package') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Build & Test') {
-            steps {
-                sh './mvnw clean test || mvn clean test'
+                bat 'mvn package -DskipTests'
             }
         }
     }
